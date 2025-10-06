@@ -13,6 +13,8 @@ public class Game : MonoBehaviour
     }
 
     public GameState state;
+    bool HasChangedState;
+
     void Start()
     {
         switch(state)
@@ -27,11 +29,13 @@ public class Game : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (state == GameState.GAMEPLAY)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 state = GameState.PAUSE;
+                HasChangedState = true;
             }
         }
         else if (state == GameState.PAUSE)
@@ -39,7 +43,26 @@ public class Game : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 state = GameState.GAMEPLAY;
+                HasChangedState = true;
             }
         }
     }
+
+    private void LateUpdate()
+    {
+        if (HasChangedState)
+        {
+            HasChangedState = false;
+
+            if (state == GameState.GAMEPLAY)
+            {
+                Time.timeScale = 1.0f;
+            }
+            else if (state == GameState.PAUSE)
+            {
+                Time.timeScale = 0.0f;
+            }
+        }
+    }
+
 }
