@@ -34,6 +34,7 @@ public class Inventory : MonoBehaviour
         gameManager = FindAnyObjectByType<GameManager>();
     }
 
+    /*
     // Update is called once per frame
     void Update()
     {
@@ -44,6 +45,21 @@ public class Inventory : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             RemoveItem("Generic Item");
+        }
+    }
+    */
+    
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        ItemObject collisionItem = hit.gameObject.GetComponent<ItemObject>();
+
+        if (collisionItem != null)
+        {
+            items.Add(collisionItem.name);
+
+            Destroy(collisionItem.gameObject);
+
+            Debug.Log("Collected "+ collisionItem.name);
         }
     }
 }
