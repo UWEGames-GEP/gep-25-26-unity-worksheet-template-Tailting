@@ -385,11 +385,12 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 0
-  CinemachineCameraTarget: {fileID: 0}
-  TopClamp: 70
-  BottomClamp: -30
+  CinemachineCameraTarget: {fileID: 733206975}
+  TopClamp: 0
+  BottomClamp: 0
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  gameManager: {fileID: 2058095373}
 --- !u!1001 &563696883
 PrefabInstance:
   m_ObjectHideFlags: 0

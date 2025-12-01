@@ -1,18 +1,33 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
 using StarterAssets;
-using System;
-using UnityEditor.Search;
 
 public class PlayerCharacterController : ThirdPersonController
 {
+    [SerializeField] private GameManager manager;
 
+    private void Start()
+    {
+        // If not assigned in Inspector, auto-find it
+        if (manager == null)
+            manager = FindAnyObjectByType<GameManager>();
+    }
+
+    private void Update()
+    {
+        // We override camera locking HERE instead of modifying ThirdPersonController.
+        if (manager != null)
+        {
+            LockCameraPosition = (manager.state == GameManager.GameState.PAUSE);
+        }
+    }
+
+    // Called by the Input System for pause button
     private void OnPause(InputValue value)
     {
         if (value.isPressed)
         {
-            Debug.Log("PauseGame");
+            manager?.TogglePause();
         }
     }
 
@@ -23,18 +38,5 @@ public class PlayerCharacterController : ThirdPersonController
             Debug.Log("Remove Item");
             GetComponent<Inventory>().RemoveItem();
         }
-    }
-
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

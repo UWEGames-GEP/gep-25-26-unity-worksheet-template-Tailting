@@ -1,68 +1,51 @@
-using NUnit.Framework.Constraints;
 using UnityEngine;
-using UnityEngine.Android;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     public enum GameState
     {
         GAMEPLAY,
         PAUSE
     }
 
-    public GameState state;
-    bool HasChangedState;
+    public GameState state = GameState.GAMEPLAY;
+    private bool hasChangedState = false;
 
-    void Start()
-    {
-        switch(state)
-        {
-            case GameState.GAMEPLAY:
-                break;
-            case GameState.PAUSE:
-                break;
-        }
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        // No more GetKeyDown — use Input System callback instead
+    }
+
+    public void TogglePause()
+    {
         if (state == GameState.GAMEPLAY)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                state = GameState.PAUSE;
-                HasChangedState = true;
-            }
+            state = GameState.PAUSE;
         }
-        else if (state == GameState.PAUSE)
+        else
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                state = GameState.GAMEPLAY;
-                HasChangedState = true;
-            }
+            state = GameState.GAMEPLAY;
         }
+
+        hasChangedState = true;
     }
 
     private void LateUpdate()
     {
-        if (HasChangedState)
-        {
-            HasChangedState = false;
+        if (!hasChangedState) return;
 
-            if (state == GameState.GAMEPLAY)
-            {
-                Time.timeScale = 1.0f;
-            }
-            else if (state == GameState.PAUSE)
-            {
-                Time.timeScale = 0.0f;
-            }
+        hasChangedState = false;
+
+        switch (state)
+        {
+            case GameState.GAMEPLAY:
+                Time.timeScale = 1f;
+                break;
+
+            case GameState.PAUSE:
+                Time.timeScale = 0f;
+                break;
         }
     }
-
 }
